@@ -1,6 +1,8 @@
 ---
 title: "ISLR - Chap6"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -26,3 +28,35 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+library(ISLR)
+summary(Hitters)
+```
+```{r}
+Hitters = na.omit(Hitters)
+?with
+with(Hitters, sum(is.na(Salary)))
+```
+
+Best  Subset Regression
+------------------------
+```{r}
+#install.packages("leaps")
+library(leaps)
+regfit.full = regsubsets(Salary ~ ., Hitters)
+summary(regfit.full)
+```
+```{r}
+regfit.full = regsubsets(Salary ~ ., data= Hitters, nvmax = 19)
+reg.summary = summary(regfit.full)
+names(reg.summary)
+plot(reg.summary$cp, xlab = "No of variables" , ylab = "Cp")
+which.min(reg.summary$cp)
+points(10, reg.summary$cp[10], pch =20, col ="red")
+```
+
+```{r}
+plot(regfit.full, scale = "Cp")
+coef(regfit.full, 10)
+```
+
