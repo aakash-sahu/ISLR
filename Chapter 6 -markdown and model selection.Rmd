@@ -129,5 +129,38 @@ plot(rmse.cv, pch = 19, type = "b")
 
 
 ```
+Ridge and Lasso regression
+```{r}
+library(glmnet)
+x = model.matrix(Salary ~.-1, data = Hitters)
+y = Hitters$Salary
 
+```
+Ridge regression alpha = 0, for lasso, alpha = 1, between 0 and 1, elastic-net
+
+```{r}
+fit.ridge = glmnet(x,y,alpha = 0)
+plot(fit.ridge, xvar = "lambda", label = TRUE)
+```
+```{r}
+cv.ridge = cv.glmnet(x,y, alpha =0)
+plot(cv.ridge)
+```
+Lasso regression with default value of alpha =1
+```{r}
+fit.lasso = glmnet(x,y)
+plot(fit.lasso, xvar = "lambda", label = TRUE)
+```
+```{r}
+plot(fit.lasso, xvar = "dev", label = TRUE)
+```
+```{r}
+cv.lasso = cv.glmnet(x,y)
+plot(cv.lasso)
+print(coef(cv.lasso))
+```
+TO chose lambda for this lasoo
+```{r}
+lasso.tr = glmnet(x[train], y[train])
+```
 
