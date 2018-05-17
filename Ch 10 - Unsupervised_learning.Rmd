@@ -86,3 +86,45 @@ table(hc.cut, km.out$cluster)
 plot(hc.complete, labels = which)
 ```
 
+#Exercise
+
+```{r}
+load("10.R.RData")
+x1 = rbind(x, x.test)
+pc = prcomp(x1, scale = TRUE)
+names(pc)
+pc$rotation[1]
+summary(pc)
+pc$rotation
+
+pc$sdev^2
+dim(x1)
+dim(pc$rotation)
+loadings(pc)
+x.pc = pc$x[,1:5]
+dim(x.pc)
+
+y1 = c(y, y.test)
+data <- data.frame(y1, x.pc)
+names(data)
+
+model = lm(y1~., data = data)
+
+summary(model)
+
+data2 = data.frame(y, x)
+names(data2)
+dim(data2)
+model2 = lm(y~.-y, data = data2)
+summary(model2)
+
+data.test = data.frame(y = y.test, x.test)
+dim(data.test)
+names(data.test)
+y.pred = predict(model2,x.test)
+length(y.pred)
+mean((y.test-y.pred)^2)
+dim(pred)
+
+```
+
